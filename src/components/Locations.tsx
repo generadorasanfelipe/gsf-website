@@ -15,8 +15,9 @@ const locations = [
   {
     id: "gsf1",
     embedUrl:
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3785.5!2d-69.6359376!3d18.4102905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8ea581006201350b%3A0xa346e88fd888b35d!2sGSF%20Andres!5e0!3m2!1sen!2sdo!4v1709500000000",
-    mapsLink: "https://maps.app.goo.gl/4rsAV5P3AC4eG4kY8",
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3785.5!2d-69.6361023!3d18.4104366!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8ea58167e1793a69%3A0x3534108ea34f63fa!2sGeneradora%20San%20Felipe%20LP%20-%20Planta%20Andr%C3%A9s%20GSF-1%20CCPP!5e0!3m2!1ses!2sdo!4v1709500000000",
+    mapsLink:
+      "https://www.google.com/maps/place/Generadora+San+Felipe+LP+-+Planta+Andr%C3%A9s+GSF-1+CCPP/@18.4104366,-69.6361023,17z/data=!3m1!4b1!4m6!3m5!1s0x8ea58167e1793a69:0x3534108ea34f63fa!8m2!3d18.4104366!4d-69.6361023!16s%2Fg%2F11xzr1s_yl",
   },
 ];
 
