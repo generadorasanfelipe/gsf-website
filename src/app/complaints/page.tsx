@@ -8,7 +8,10 @@ import TurnstileWidget from "@/components/TurnstileWidget";
 
 type ErrorKind = "generic" | "captcha" | "rateLimit";
 
+type ReporterClass = "internal" | "external";
+
 type FormData = {
+  reporterClass: ReporterClass | "";
   type: string;
   name: string;
   email: string;
@@ -20,6 +23,7 @@ type FormData = {
 };
 
 const initialForm: FormData = {
+  reporterClass: "",
   type: "complaint",
   name: "",
   email: "",
@@ -204,6 +208,49 @@ export default function ComplaintsPage() {
               </button>
             </div>
           </motion.div>
+        ) : !form.reporterClass ? (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <h2 className="text-lg font-semibold text-navy-900">
+              {t.complaints.classGateTitle}
+            </h2>
+            <p className="mt-2 text-sm text-navy-500 leading-relaxed">
+              {t.complaints.classGateSubtitle}
+            </p>
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {([
+                {
+                  value: "internal" as const,
+                  label: t.complaints.classInternal,
+                  desc: t.complaints.classInternalDesc,
+                },
+                {
+                  value: "external" as const,
+                  label: t.complaints.classExternal,
+                  desc: t.complaints.classExternalDesc,
+                },
+              ]).map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() =>
+                    setForm((prev) => ({ ...prev, reporterClass: opt.value }))
+                  }
+                  className="group rounded-2xl border border-navy-200 bg-white p-6 text-left transition-all hover:border-accent-400 hover:bg-accent-50/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400"
+                >
+                  <span className="block text-base font-semibold text-navy-900 group-hover:text-accent-700">
+                    {opt.label}
+                  </span>
+                  <span className="mt-2 block text-sm text-navy-500 leading-relaxed">
+                    {opt.desc}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </motion.div>
         ) : (
           <motion.form
             initial={{ opacity: 0, y: 20 }}
@@ -212,6 +259,25 @@ export default function ComplaintsPage() {
             onSubmit={handleSubmit}
             className="space-y-8"
           >
+            {/* Selected classification + change control */}
+            <div className="flex items-center justify-between rounded-xl border border-navy-200 bg-navy-50 px-4 py-3">
+              <span className="text-sm text-navy-700">
+                <span className="font-semibold">
+                  {form.reporterClass === "internal"
+                    ? t.complaints.classInternal
+                    : t.complaints.classExternal}
+                </span>
+              </span>
+              <button
+                type="button"
+                onClick={() =>
+                  setForm((prev) => ({ ...prev, reporterClass: "" }))
+                }
+                className="text-xs font-medium text-accent-600 hover:text-accent-700 underline underline-offset-2"
+              >
+                {t.complaints.classChange}
+              </button>
+            </div>
             {/* Honeypot — visually hidden, ignored by humans, filled by bots */}
             <div style={honeypotStyle} aria-hidden="true">
               <label htmlFor="website">Website</label>
