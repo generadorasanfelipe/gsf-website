@@ -57,25 +57,38 @@ export async function checkRateLimit(ip: string): Promise<RateLimitResult> {
   const limiters = getLimiters();
   if (!limiters) return { allowed: true };
 
-  const hourly = await limiters.hourly.limit(ip);
-  if (!hourly.success) {
-    return {
-      allowed: false,
-      window: "hour",
-      resetSeconds: Math.max(1, Math.ceil((hourly.reset - Date.now()) / 1000)),
-    };
-  }
+  // Fail OPEN on any Upstash error. The rate limiter is a secondary defense;
+  // Cloudflare Turnstile is the primary bot gate. If Upstash is unreachable
+  // (e.g. the free-tier DB was evicted after inactivity, or credentials are
+  // stale) the request must still be allowed to proceed — a rate-limiter
+  // outage must never take down the complaints channel.
+  try {
+    const hourly = await limiters.hourly.limit(ip);
+    if (!hourly.success) {
+      return {
+        allowed: false,
+        window: "hour",
+        resetSeconds: Math.max(1, Math.ceil((hourly.reset - Date.now()) / 1000)),
+      };
+    }
 
-  const daily = await limiters.daily.limit(ip);
-  if (!daily.success) {
-    return {
-      allowed: false,
-      window: "day",
-      resetSeconds: Math.max(1, Math.ceil((daily.reset - Date.now()) / 1000)),
-    };
-  }
+    const daily = await limiters.daily.limit(ip);
+    if (!daily.success) {
+      return {
+        allowed: false,
+        window: "day",
+        resetSeconds: Math.max(1, Math.ceil((daily.reset - Date.now()) / 1000)),
+      };
+    }
 
-  return { allowed: true };
+    return { allowed: true };
+  } catch (err) {
+    console.error(
+      "[security] Rate limit check failed — failing open:",
+      err instanceof Error ? err.message : String(err)
+    );
+    return { allowed: true };
+  }
 }
 
 export function extractClientIp(headers: Headers): string {
