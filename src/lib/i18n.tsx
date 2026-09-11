@@ -113,7 +113,7 @@ const en = {
     constructionTitle: "Current Images",
     constructionSubtitle:
       "Aerial views of the GSF-1 construction site showing the latest progress.",
-    constructionDate: "March 2, 2026",
+    constructionDate: "September 4, 2026",
     constructionZoomHint: "Click to enlarge",
     constructionPause: "Pause slideshow",
     constructionPlay: "Play slideshow",
@@ -508,7 +508,7 @@ const es: Translations = {
     constructionTitle: "Imágenes Actuales",
     constructionSubtitle:
       "Vistas aéreas del sitio de construcción de GSF-1 mostrando el avance más reciente.",
-    constructionDate: "2 de marzo de 2026",
+    constructionDate: "4 de septiembre de 2026",
     constructionZoomHint: "Click para ampliar",
     constructionPause: "Pausar presentación",
     constructionPlay: "Reanudar presentación",
