@@ -9,6 +9,18 @@ import SectionEyebrow from "./SectionEyebrow";
 
 const featuredArticles = [
   {
+    image: "/images/news/diariolibre.jpg",
+    source: "Diario Libre",
+    date: "Aug 10, 2026",
+    dateEs: "10 Ago 2026",
+    dateIso: "2026-08-10",
+    titleEn:
+      "Abinader visits plant that will add 467 MW to the electrical grid and start operations in 2027",
+    titleEs:
+      "Abinader visita planta que aportará 467 MW al sistema eléctrico y entrará en operación en 2027",
+    url: "https://www.diariolibre.com/economia/energia/2026/08/10/generadora-san-felipe-andres-i-y-su-impacto-en-la-generacion-electrica/3625278",
+  },
+  {
     image: "/images/news/mem.jpg",
     source: "Ministerio de Energía y Minas",
     date: "Apr 19, 2026",
@@ -19,18 +31,6 @@ const featuredArticles = [
     titleEs:
       "San Felipe I toma forma: Gobierno supervisa obra que sumará 470 MW y reforzará la seguridad eléctrica del país",
     url: "https://mem.gob.do/san-felipe-i-toma-forma-gobierno-supervisa-obra-que-sumara-470-mw-y-reforzara-la-seguridad-electrica-del-pais/",
-  },
-  {
-    image: "/images/news/gevernova.jpg",
-    source: "GE Vernova",
-    date: "Dec 17, 2024",
-    dateEs: "17 Dic 2024",
-    dateIso: "2024-12-17",
-    titleEn:
-      "GE Vernova announces the first Class H order in the Caribbean",
-    titleEs:
-      "GE Vernova anuncia el primer pedido de Clase H en el Caribe",
-    url: "https://www.gevernova.com/news/press-releases/ge-vernova-anuncia-el-primer-pedido-de-clase-h-en-el-caribe",
   },
   {
     image: "/images/news/presidencia.jpg",
@@ -47,6 +47,18 @@ const featuredArticles = [
 ];
 
 const articles = [
+  {
+    image: "/images/news/gevernova.jpg",
+    source: "GE Vernova",
+    date: "Dec 17, 2024",
+    dateEs: "17 Dic 2024",
+    dateIso: "2024-12-17",
+    titleEn:
+      "GE Vernova announces the first Class H order in the Caribbean",
+    titleEs:
+      "GE Vernova anuncia el primer pedido de Clase H en el Caribe",
+    url: "https://www.gevernova.com/news/press-releases/ge-vernova-anuncia-el-primer-pedido-de-clase-h-en-el-caribe",
+  },
   {
     image: "/images/news/eldia.webp",
     source: "El Día",
