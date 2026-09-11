@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
 import { eventListSchema, MilestoneEventInput } from "@/lib/schema";
 import ConstructionGallery from "./ConstructionGallery";
+import PlantMap from "./PlantMap";
 import FadeIn from "./FadeIn";
 import Lightbox from "./Lightbox";
 import SectionEyebrow from "./SectionEyebrow";
@@ -447,6 +448,24 @@ export default function Project() {
                 </motion.div>
               );
             })}
+          </div>
+        </div>
+      </div>
+
+      {/* Site Layout — interactive plant plot plan */}
+      <div className="bg-white py-16 lg:py-20">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <FadeIn>
+            <SectionEyebrow label={t.plantMap.sectionTag} />
+            <h3 className="text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl">
+              {t.plantMap.sectionTitle}
+            </h3>
+            <p className="mt-4 max-w-3xl text-base leading-relaxed text-navy-600">
+              {t.plantMap.sectionSubtitle}
+            </p>
+          </FadeIn>
+          <div className="mt-10">
+            <PlantMap />
           </div>
         </div>
       </div>

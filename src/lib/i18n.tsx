@@ -201,6 +201,10 @@ const en = {
     brand: "Generadora San Felipe — 467 MW Combined Cycle",
   },
   plantMap: {
+    sectionTag: "Site Layout",
+    sectionTitle: "Plant Plot Plan",
+    sectionSubtitle:
+      "Official EPC plot plan of the GSF-1 site with 15 identified zones. Click any numbered marker to see the working description of that zone.",
     zoneDetail: "Zone detail",
     close: "Close",
     emptyHelp:
@@ -597,6 +601,10 @@ const es: Translations = {
     brand: "Generadora San Felipe — 467 MW Ciclo Combinado",
   },
   plantMap: {
+    sectionTag: "Distribución del Sitio",
+    sectionTitle: "Plano General de la Planta",
+    sectionSubtitle:
+      "Plot plan oficial EPC del sitio GSF-1 con 15 zonas identificadas. Haz clic en cualquier marcador numerado para ver la descripción de esa zona.",
     zoneDetail: "Detalle de zona",
     close: "Cerrar",
     emptyHelp:
