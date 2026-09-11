@@ -230,6 +230,16 @@ const en = {
     title: "Complaints & Grievance Mechanism",
     subtitle:
       "We are committed to maintaining a transparent and accessible channel for all complaints, grievances, and reports related to our operations.",
+    classGateTitle: "Who is submitting this report?",
+    classGateSubtitle:
+      "Select the option that applies so your report reaches the right team. This determines the department that will handle it.",
+    classInternal: "Internal — GSF employee",
+    classInternalDesc:
+      "You are a member of the Generadora San Felipe staff.",
+    classExternal: "External — community, supplier or third party",
+    classExternalDesc:
+      "You are part of the community, a supplier, or an external party.",
+    classChange: "Change",
     typeLabel: "Type of Report",
     typeComplaint: "Complaint",
     typeGrievance: "Grievance",
@@ -626,6 +636,16 @@ const es: Translations = {
     title: "Canal de Quejas y Denuncias",
     subtitle:
       "Estamos comprometidos a mantener un canal transparente y accesible para todas las quejas, reclamos y denuncias relacionadas con nuestras operaciones.",
+    classGateTitle: "¿Quién presenta este reporte?",
+    classGateSubtitle:
+      "Selecciona la opción que aplica para que tu reporte llegue al equipo correcto. Esto determina el departamento que lo gestionará.",
+    classInternal: "Interno — empleado de GSF",
+    classInternalDesc:
+      "Eres parte del personal de Generadora San Felipe.",
+    classExternal: "Externo — comunidad, proveedor o tercero",
+    classExternalDesc:
+      "Eres parte de la comunidad, un proveedor, o un tercero externo.",
+    classChange: "Cambiar",
     typeLabel: "Tipo de Reporte",
     typeComplaint: "Queja",
     typeGrievance: "Reclamo",

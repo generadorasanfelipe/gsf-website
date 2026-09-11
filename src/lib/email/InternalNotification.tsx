@@ -13,6 +13,7 @@ import {
 
 type Props = {
   referenceId: string;
+  reporterClass: "internal" | "external";
   type: "complaint" | "grievance" | "report";
   anonymous: boolean;
   name?: string;
@@ -29,8 +30,19 @@ const TYPE_LABEL: Record<Props["type"], string> = {
   report: "Denuncia",
 };
 
+const CLASS_LABEL: Record<Props["reporterClass"], string> = {
+  internal: "INTERNO — Empleado GSF",
+  external: "EXTERNO — Comunidad / Proveedor / Tercero",
+};
+
+const CLASS_DEPT: Record<Props["reporterClass"], string> = {
+  internal: "Cumplimiento",
+  external: "Relaciones",
+};
+
 export default function InternalNotification({
   referenceId,
+  reporterClass,
   type,
   anonymous,
   name,
@@ -52,6 +64,14 @@ export default function InternalNotification({
           <Section style={refSection}>
             <Text style={refLabel}>Código de referencia</Text>
             <Text style={refValue}>{referenceId}</Text>
+          </Section>
+
+          <Section style={classSection}>
+            <Text style={classLabelStyle}>Clasificación</Text>
+            <Text style={classValue}>{CLASS_LABEL[reporterClass]}</Text>
+            <Text style={classDept}>
+              Departamento responsable: <strong>{CLASS_DEPT[reporterClass]}</strong>
+            </Text>
           </Section>
 
           <Section>
@@ -161,6 +181,32 @@ const refValue = {
   fontSize: "18px",
   fontWeight: "700",
   fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, monospace",
+  margin: "0",
+};
+const classSection = {
+  backgroundColor: "#e6f7ec",
+  border: "1px solid #96deb1",
+  padding: "16px 20px",
+  borderRadius: "8px",
+  margin: "0 0 24px",
+};
+const classLabelStyle = {
+  color: "#007a2d",
+  fontSize: "11px",
+  fontWeight: "600",
+  textTransform: "uppercase" as const,
+  letterSpacing: "0.1em",
+  margin: "0 0 4px",
+};
+const classValue = {
+  color: "#004a1b",
+  fontSize: "16px",
+  fontWeight: "700",
+  margin: "0 0 6px",
+};
+const classDept = {
+  color: "#374151",
+  fontSize: "13px",
   margin: "0",
 };
 const fieldLabel = {
