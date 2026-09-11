@@ -20,7 +20,8 @@ const images = [
   { src: "/images/construction-4.jpg", alt: "Construction progress — aerial view 4" },
   { src: "/images/construction-5.jpg", alt: "Construction progress — aerial view 5" },
   { src: "/images/construction-6.jpg", alt: "Construction progress — aerial view 6" },
-  { src: "/images/construction-7.jpg", alt: "Construction progress — panoramic view" },
+  { src: "/images/construction-7.jpg", alt: "Construction progress — aerial view 7" },
+  { src: "/images/construction-8.jpg", alt: "Construction progress — aerial view 8" },
 ];
 
 const galleryImages: GalleryImageInput[] = images.map((img) => ({
