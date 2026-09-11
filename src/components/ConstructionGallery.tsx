@@ -129,6 +129,7 @@ export default function ConstructionGallery() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 1200px"
+                quality={70}
                 priority={current === 0}
               />
 
