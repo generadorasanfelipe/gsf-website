@@ -9,7 +9,7 @@ export default function Complaints() {
   const { t } = useI18n();
 
   return (
-    <section className="bg-white py-16 lg:py-20">
+    <section id="complaints" className="scroll-mt-24 bg-white py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <FadeIn className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy-50 to-white border border-navy-100 px-6 py-10 sm:px-10 lg:px-14 lg:py-14">
           <div className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-accent-500/10 blur-3xl" />

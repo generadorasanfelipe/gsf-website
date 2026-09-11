@@ -111,7 +111,7 @@ export default function Navbar() {
             </button>
 
             <a
-              href="#locations"
+              href="#complaints"
               className="inline-flex items-center min-h-[44px] rounded-full bg-accent-500 px-5 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-600 hover:shadow-lg hover:shadow-accent-500/25"
             >
               {t.nav.contact}
@@ -191,7 +191,7 @@ export default function Navbar() {
               {locale === "en" ? "Cambiar a Español" : "Switch to English"}
             </motion.button>
             <motion.a
-              href="#locations"
+              href="#complaints"
               onClick={() => setMobileOpen(false)}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
