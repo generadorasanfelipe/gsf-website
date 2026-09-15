@@ -9,6 +9,12 @@ type CountUpProps = {
   value: string;
   /** Animation duration in ms. Defaults to 1400ms. */
   durationMs?: number;
+  /**
+   * Animate on mount instead of waiting for scroll-into-view. Use for
+   * above-the-fold content (e.g. hero stats) that can sit below the fold on
+   * small screens — otherwise useInView never fires and the value stays at 0.
+   */
+  immediate?: boolean;
 };
 
 type ParsedValue = {
@@ -35,7 +41,11 @@ function parseStatValue(input: string): ParsedValue {
   };
 }
 
-export default function CountUp({ value, durationMs = 1400 }: CountUpProps) {
+export default function CountUp({
+  value,
+  durationMs = 1400,
+  immediate = false,
+}: CountUpProps) {
   const { locale } = useI18n();
   const parsed = useMemo(() => parseStatValue(value), [value]);
   const bcp47 = locale === "es" ? "es-DO" : "en-US";
@@ -47,9 +57,10 @@ export default function CountUp({ value, durationMs = 1400 }: CountUpProps) {
   const inView = useInView(ref, { once: true, margin: "-50px" });
   const reduceMotion = useReducedMotion();
   const [display, setDisplay] = useState(reduceMotion ? parsed.number : 0);
+  const shouldAnimate = immediate || inView;
 
   useEffect(() => {
-    if (!inView || reduceMotion) return;
+    if (!shouldAnimate || reduceMotion) return;
     const start = performance.now();
     let raf = 0;
     const tick = (now: number) => {
@@ -64,8 +75,16 @@ export default function CountUp({ value, durationMs = 1400 }: CountUpProps) {
       }
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [inView, reduceMotion, parsed.number, durationMs]);
+    // Guarantee the final value even if requestAnimationFrame never ticks —
+    // e.g. the tab is backgrounded (rAF is fully paused there, setTimeout is
+    // only throttled) or the animation is interrupted. Without this the
+    // counter can stay stuck at 0.
+    const settle = setTimeout(() => setDisplay(parsed.number), durationMs + 150);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(settle);
+    };
+  }, [shouldAnimate, reduceMotion, parsed.number, durationMs]);
 
   const formatted =
     parsed.decimals > 0
