@@ -112,7 +112,7 @@ export default function Hero() {
             ].map((stat) => (
               <div key={stat.label}>
                 <div className="text-2xl font-bold text-white sm:text-3xl lg:text-4xl tabular-nums">
-                  <CountUp value={stat.value} />
+                  <CountUp value={stat.value} immediate />
                   <span className="text-accent-400 text-lg ml-0.5">
                     {stat.unit}
                   </span>
