@@ -68,14 +68,6 @@ export default function Footer() {
                   {t.footer.epc}
                 </a>
               </li>
-              <li>
-                <a
-                  href="/sitemap.xml"
-                  className="inline-flex items-center min-h-[44px] text-sm text-navy-600 hover:text-accent-600 transition-colors"
-                >
-                  {t.footer.sitemap}
-                </a>
-              </li>
             </ul>
           </div>
 
