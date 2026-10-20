@@ -5,6 +5,18 @@
 const TURNSTILE_ORIGIN = "https://challenges.cloudflare.com";
 // Google Maps embed iframes in src/components/Locations.tsx.
 const GOOGLE_MAPS_ORIGIN = "https://www.google.com";
+// Supabase project for admin auth (magic link) — client SDK calls go here
+// from /admin/* pages. Derived from NEXT_PUBLIC_SUPABASE_URL so a Supabase
+// project move doesn't require editing CSP.
+const SUPABASE_ORIGIN = (() => {
+  const raw = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!raw) return null;
+  try {
+    return new URL(raw).origin;
+  } catch {
+    return null;
+  }
+})();
 
 // Next.js dev mode uses eval-source-map, which requires 'unsafe-eval' in CSP.
 // Production bundles do not eval, so the production CSP stays strict.
@@ -28,7 +40,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self' data:",
-  `connect-src 'self' ${TURNSTILE_ORIGIN}`,
+  `connect-src 'self' ${TURNSTILE_ORIGIN}${SUPABASE_ORIGIN ? " " + SUPABASE_ORIGIN : ""}`,
   "media-src 'self'",
   `frame-src ${TURNSTILE_ORIGIN} ${GOOGLE_MAPS_ORIGIN}`,
   "frame-ancestors 'none'",
