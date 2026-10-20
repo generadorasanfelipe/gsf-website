@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import SiteChrome from "@/components/SiteChrome";
 import SkipLink from "@/components/SkipLink";
 import StructuredData from "@/components/StructuredData";
 import { Providers } from "@/components/Providers";
@@ -90,9 +89,7 @@ export default function RootLayout({
         <StructuredData id="ld-website" data={websiteSchema()} />
         <Providers>
           <SkipLink />
-          <Navbar />
-          <main id="main">{children}</main>
-          <Footer />
+          <SiteChrome>{children}</SiteChrome>
         </Providers>
       </body>
     </html>
