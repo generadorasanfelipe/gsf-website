@@ -9,9 +9,16 @@ type Status =
   | { kind: "sent" }
   | { kind: "error"; message: string };
 
+const CALLBACK_ERRORS: Record<string, string> = {
+  exchange_failed:
+    "El enlace de acceso expiró o ya fue usado. Solicita uno nuevo abajo.",
+  missing_code: "El enlace no es válido. Solicita uno nuevo abajo.",
+};
+
 export default function LoginForm() {
   const params = useSearchParams();
   const nextPath = params.get("next") ?? "/admin/complaints";
+  const callbackError = CALLBACK_ERRORS[params.get("error") ?? ""];
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>({ kind: "idle" });
 
@@ -67,6 +74,14 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {callbackError && (
+        <p
+          role="alert"
+          className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800"
+        >
+          {callbackError}
+        </p>
+      )}
       <label className="block">
         <span className="text-sm font-medium text-navy-700">Correo</span>
         <input
