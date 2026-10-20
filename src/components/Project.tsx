@@ -430,7 +430,7 @@ export default function Project() {
                           </motion.div>
                         )}
                       </AnimatePresence>
-                      <div className={`mt-2 flex items-center gap-1 text-[10px] font-medium text-navy-400 ${isReversed ? "" : "md:justify-end"}`}>
+                      <div className={`mt-2 flex items-center gap-1 text-xs font-medium text-navy-600 ${isReversed ? "" : "md:justify-end"}`}>
                         <span>{isExpanded ? t.project.tlCollapse : t.project.tlExpand}</span>
                         <svg
                           aria-hidden="true"

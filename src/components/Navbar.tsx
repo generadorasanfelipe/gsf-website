@@ -112,7 +112,7 @@ export default function Navbar() {
 
             <a
               href="#complaints"
-              className="inline-flex items-center min-h-[44px] rounded-full bg-accent-500 px-5 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-600 hover:shadow-lg hover:shadow-accent-500/25"
+              className="inline-flex items-center min-h-[44px] rounded-full bg-accent-500 px-5 text-sm font-semibold text-black transition-all duration-300 hover:bg-accent-600 hover:shadow-lg hover:shadow-accent-500/25"
             >
               {t.nav.contact}
             </a>

@@ -36,7 +36,6 @@ export const metadata: Metadata = {
     "GE Vernova 7HA.02",
     "energía",
     "sostenibilidad",
-    "Pantone 2955",
     "power generation",
     "Dominican Republic",
     "combined cycle",

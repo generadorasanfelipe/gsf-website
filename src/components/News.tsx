@@ -165,7 +165,7 @@ export default function News() {
                   <h3 className="mt-4 text-lg font-bold text-navy-900 leading-tight group-hover:text-accent-600 transition-colors lg:text-xl">
                     {locale === "es" ? article.titleEs : article.titleEn}
                   </h3>
-                  <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent-500 group-hover:text-accent-600 transition-colors">
+                  <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent-700 group-hover:text-accent-800 transition-colors">
                     {t.news.readMore}
                     <svg aria-hidden="true"
                       className="h-4 w-4 transition-transform group-hover:translate-x-1"
@@ -224,7 +224,7 @@ export default function News() {
                 <h3 className="mt-2 text-sm font-semibold text-navy-900 leading-snug line-clamp-3 group-hover:text-accent-600 transition-colors">
                   {locale === "es" ? article.titleEs : article.titleEn}
                 </h3>
-                <div className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-accent-500 group-hover:text-accent-600 transition-colors">
+                <div className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-accent-700 group-hover:text-accent-800 transition-colors">
                   {t.news.readMore}
                   <svg aria-hidden="true"
                     className="h-3 w-3 transition-transform group-hover:translate-x-1"
