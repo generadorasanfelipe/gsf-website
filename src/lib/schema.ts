@@ -85,12 +85,12 @@ export type MilestoneEventInput = {
 };
 
 export function eventSchema(input: MilestoneEventInput) {
-  const eventStatus =
-    input.status === "completed"
-      ? "https://schema.org/EventCompleted"
-      : input.status === "in_progress"
-      ? "https://schema.org/EventScheduled"
-      : "https://schema.org/EventScheduled";
+  // Schema.org EventStatusType has no "completed" value — the valid options are
+  // EventScheduled / EventCancelled / EventPostponed / EventRescheduled /
+  // EventMovedOnline. A past (completed) event is simply EventScheduled with a
+  // startDate in the past, so every milestone uses EventScheduled. The visual
+  // completed/in_progress/upcoming distinction lives in the UI, not here.
+  const eventStatus = "https://schema.org/EventScheduled";
 
   return {
     "@type": "Event",
