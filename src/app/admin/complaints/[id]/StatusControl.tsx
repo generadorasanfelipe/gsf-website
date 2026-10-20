@@ -6,9 +6,9 @@ import {
   type ComplaintStatus,
 } from "@/lib/admin/complaints";
 import { STATUS_LABEL } from "@/lib/admin/labels";
-import { updateStatusAction, type UpdateStatusState } from "../actions";
+import { updateStatusAction, type ActionState } from "../actions";
 
-const initial: UpdateStatusState = { ok: false };
+const initial: ActionState = { ok: false };
 
 export default function StatusControl({
   id,

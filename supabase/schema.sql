@@ -70,3 +70,42 @@ alter table public.complaints enable row level security;
 
 -- Optional hardening (uncomment if/when needed):
 -- revoke all on public.complaints from anon, authenticated;
+
+-- ---------------------------------------------------------------------------
+-- Admin panel phase 3 — internal notes + status audit log.
+--
+-- NOTE ON DRIFT: the live production table (project lmsmyzafewnybldmhjhe) uses a
+-- UUID `complaints.id`, not the bigint identity declared above. These child
+-- tables reference it as UUID to match production. If you ever rebuild the
+-- complaints table from scratch with a bigint id, change these FKs to bigint.
+--
+-- Apply once in the Supabase SQL editor of the project the app points at.
+-- ---------------------------------------------------------------------------
+
+-- Free-form internal notes, written by allowlisted admins on a report.
+create table if not exists public.complaint_notes (
+  id           uuid primary key default gen_random_uuid(),
+  complaint_id uuid not null references public.complaints (id) on delete cascade,
+  author_email text        not null,
+  body         text        not null,
+  created_at   timestamptz not null default now()
+);
+create index if not exists complaint_notes_complaint_idx
+  on public.complaint_notes (complaint_id, created_at);
+
+-- Immutable audit trail of status transitions.
+create table if not exists public.complaint_history (
+  id           uuid primary key default gen_random_uuid(),
+  complaint_id uuid not null references public.complaints (id) on delete cascade,
+  actor_email  text        not null,
+  from_status  text,
+  to_status    text        not null,
+  created_at   timestamptz not null default now()
+);
+create index if not exists complaint_history_complaint_idx
+  on public.complaint_history (complaint_id, created_at);
+
+-- Same posture as complaints: RLS on, no policies. All access is via the
+-- service role behind requireAdmin(); the anon/session key can never read these.
+alter table public.complaint_notes   enable row level security;
+alter table public.complaint_history enable row level security;
