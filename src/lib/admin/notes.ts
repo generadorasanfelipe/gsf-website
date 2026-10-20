@@ -28,7 +28,12 @@ export async function listNotes(complaintId: string): Promise<ComplaintNote[]> {
     .select("*")
     .eq("complaint_id", complaintId)
     .order("created_at", { ascending: true });
-  if (error) throw new Error(`[admin] listNotes failed: ${error.message}`);
+  if (error) {
+    // Fail soft: if the table does not exist yet (migration not applied) the
+    // detail page should still render, just without notes.
+    console.error("[admin] listNotes failed:", error.message);
+    return [];
+  }
   return (data ?? []) as ComplaintNote[];
 }
 
@@ -61,7 +66,10 @@ export async function listHistory(
     .select("*")
     .eq("complaint_id", complaintId)
     .order("created_at", { ascending: true });
-  if (error) throw new Error(`[admin] listHistory failed: ${error.message}`);
+  if (error) {
+    console.error("[admin] listHistory failed:", error.message);
+    return [];
+  }
   return (data ?? []) as ComplaintHistory[];
 }
 
