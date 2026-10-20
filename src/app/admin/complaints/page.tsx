@@ -62,15 +62,28 @@ function buildFilters(sp: SearchParams): ComplaintFilters {
   };
 }
 
+const FILTER_KEYS = ["status", "type", "class", "from", "to", "q"] as const;
+
 /** Preserve the active filters when building a page link. */
 function pageHref(sp: SearchParams, page: number): string {
   const params = new URLSearchParams();
-  for (const key of ["status", "type", "class", "from", "to", "q"]) {
+  for (const key of FILTER_KEYS) {
     const val = str(sp[key]);
     if (val) params.set(key, val);
   }
   params.set("page", String(page));
   return `/admin/complaints?${params.toString()}`;
+}
+
+/** Download link for the CSV export, carrying the active filters. */
+function exportHref(sp: SearchParams): string {
+  const params = new URLSearchParams();
+  for (const key of FILTER_KEYS) {
+    const val = str(sp[key]);
+    if (val) params.set(key, val);
+  }
+  const qs = params.toString();
+  return `/api/admin/complaints/export${qs ? `?${qs}` : ""}`;
 }
 
 export default async function AdminComplaintsPage({
@@ -92,12 +105,36 @@ export default async function AdminComplaintsPage({
 
   return (
     <div>
-      <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold text-navy-900">Quejas y denuncias</h1>
-        <p className="text-sm text-navy-600">
-          {totalAll} reporte{totalAll === 1 ? "" : "s"} en total · canal de
-          quejas y denuncias
-        </p>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-2xl font-bold text-navy-900">
+            Quejas y denuncias
+          </h1>
+          <p className="text-sm text-navy-600">
+            {totalAll} reporte{totalAll === 1 ? "" : "s"} en total · canal de
+            quejas y denuncias
+          </p>
+        </div>
+        <a
+          href={exportHref(sp)}
+          className="inline-flex items-center gap-2 rounded-lg border border-navy-300 px-4 py-2 text-sm font-medium text-navy-700 hover:border-navy-500 hover:bg-navy-50"
+        >
+          <svg
+            aria-hidden="true"
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+          Exportar CSV
+        </a>
       </div>
 
       {/* Status summary chips */}
