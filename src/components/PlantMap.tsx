@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 
@@ -163,6 +164,7 @@ export default function PlantMap({
 }) {
   const { locale, t } = useI18n();
   const [active, setActive] = useState<number | null>(null);
+  const [focused, setFocused] = useState<number | null>(null);
   const reduceMotion = useReducedMotion();
   const panelRef = useRef<HTMLDivElement>(null);
   const pick = (s: LocaleString) => (locale === "es" ? s.es : s.en);
@@ -197,27 +199,29 @@ export default function PlantMap({
           className="relative w-full"
           style={{ aspectRatio: `${SOURCE_ASPECT_RATIO}` }}
         >
-          {/* Inverted plot plan */}
-          <picture>
-            <img
-              src="/images/gsf-plotplan-source.png"
-              alt="GSF-1 plant plot plan"
-              className="absolute inset-0 h-full w-full select-none object-contain"
-              style={{
-                filter: "invert(1) brightness(1.05) contrast(1.1)",
-                mixBlendMode: "screen",
-                opacity: 0.88,
-              }}
-              draggable={false}
-            />
-          </picture>
+          {/* Inverted plot plan — optimized by next/image (WebP, responsive) */}
+          <Image
+            src="/images/gsf-plotplan-source.png"
+            alt="GSF-1 plant plot plan"
+            fill
+            sizes="(min-width: 1024px) 66vw, 100vw"
+            className="select-none object-contain"
+            style={{
+              filter: "invert(1) brightness(1.05) contrast(1.1)",
+              mixBlendMode: "screen",
+              opacity: 0.88,
+            }}
+            draggable={false}
+          />
 
           {/* DEBUG: user annotation overlay — exact pixels the user painted */}
           {showAnnotationOverlay && (
-            <img
+            <Image
               src="/images/gsf-plotplan-anotado.png"
               alt="User annotation overlay (debug)"
-              className="pointer-events-none absolute inset-0 h-full w-full select-none object-contain"
+              fill
+              sizes="(min-width: 1024px) 66vw, 100vw"
+              className="pointer-events-none select-none object-contain"
               style={{ opacity: 0.5, mixBlendMode: "normal" }}
               draggable={false}
             />
@@ -319,6 +323,20 @@ export default function PlantMap({
                       fill="url(#pm-accent-glow)"
                       className="pointer-events-none"
                     />
+                    {/* Visible focus ring for keyboard users (replaces the
+                        suppressed default outline). */}
+                    {focused === h.id && (
+                      <circle
+                        cx={h.cx}
+                        cy={h.cy}
+                        r={36}
+                        fill="none"
+                        stroke="#ffffff"
+                        strokeWidth={4}
+                        strokeDasharray="7 5"
+                        className="pointer-events-none"
+                      />
+                    )}
                     {/* Marker button — invisible bigger hit area */}
                     <circle
                       cx={h.cx}
@@ -327,6 +345,8 @@ export default function PlantMap({
                       fill="transparent"
                       className="cursor-pointer focus:outline-none"
                       onClick={() => setActive(h.id === active ? null : h.id)}
+                      onFocus={() => setFocused(h.id)}
+                      onBlur={() => setFocused((f) => (f === h.id ? null : f))}
                       role="button"
                       tabIndex={0}
                       aria-label={`${t.plantMap.openZoneAria} ${h.id}: ${pick(h.name)}`}
@@ -388,7 +408,7 @@ export default function PlantMap({
               className="mt-3"
             >
               <div className="flex items-center gap-3">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-accent-500 text-base font-bold text-white">
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-accent-500 text-base font-bold text-black">
                   {activeHotspot.id}
                 </span>
                 <h3 className="text-lg font-semibold text-navy-900">

@@ -190,7 +190,7 @@ export default function ConstructionGallery() {
 
               {/* Counter */}
               <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 pointer-events-none">
-                <span className="text-sm font-mono text-white/70">
+                <span className="rounded-md bg-black/55 px-2 py-0.5 text-sm font-mono text-white">
                   {String(current + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
                 </span>
               </div>
