@@ -14,7 +14,7 @@ export default function StatusControl({
   id,
   current,
 }: {
-  id: number;
+  id: string;
   current: ComplaintStatus;
 }) {
   const [state, formAction, pending] = useActionState(
