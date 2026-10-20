@@ -29,14 +29,14 @@ export default async function AdminLayout({
           >
             GSF — Panel Interno
           </Link>
-          <div className="flex items-center gap-4 text-xs">
-            {user?.email && (
+          {user && (
+            <div className="flex items-center gap-4 text-xs">
               <span className="hidden text-navy-500 sm:inline">
                 {user.email}
               </span>
-            )}
-            <AdminLogoutButton />
-          </div>
+              <AdminLogoutButton />
+            </div>
+          )}
         </div>
       </header>
       <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">{children}</div>
