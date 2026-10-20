@@ -237,9 +237,9 @@ const en = {
     classGateTitle: "Who is submitting this report?",
     classGateSubtitle:
       "Select the option that applies so your report reaches the right team. This determines the department that will handle it.",
-    classInternal: "Internal — GSF employee",
+    classInternal: "Internal — GSF or EPC personnel",
     classInternalDesc:
-      "You are a member of the Generadora San Felipe staff.",
+      "You are a Generadora San Felipe employee, or an employee or contractor of the EPC.",
     classExternal: "External — community, supplier or third party",
     classExternalDesc:
       "You are part of the community, a supplier, or an external party.",
@@ -647,9 +647,9 @@ const es: Translations = {
     classGateTitle: "¿Quién presenta este reporte?",
     classGateSubtitle:
       "Selecciona la opción que aplica para que tu reporte llegue al equipo correcto. Esto determina el departamento que lo gestionará.",
-    classInternal: "Interno — empleado de GSF",
+    classInternal: "Interno — personal de GSF o del EPC",
     classInternalDesc:
-      "Eres parte del personal de Generadora San Felipe.",
+      "Eres empleado de Generadora San Felipe, o empleado o contratista del EPC.",
     classExternal: "Externo — comunidad, proveedor o tercero",
     classExternalDesc:
       "Eres parte de la comunidad, un proveedor, o un tercero externo.",

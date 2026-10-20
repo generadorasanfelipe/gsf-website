@@ -36,7 +36,7 @@ const CLASS_LABEL: Record<Props["reporterClass"], string> = {
 };
 
 const CLASS_DEPT: Record<Props["reporterClass"], string> = {
-  internal: "Cumplimiento",
+  internal: "Reclamos",
   external: "Relaciones",
 };
 
