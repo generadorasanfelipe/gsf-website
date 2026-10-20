@@ -73,11 +73,31 @@ export type ComplaintListResult = {
 export async function listComplaints(
   filters: ComplaintFilters,
 ): Promise<ComplaintListResult> {
-  const supabase = getSupabaseAdminClient();
   const page = Math.max(1, filters.page ?? 1);
   const fromIdx = (page - 1) * PAGE_SIZE;
   const toIdx = fromIdx + PAGE_SIZE - 1;
 
+  const { data, error, count } = await filteredComplaintsQuery(filters).range(
+    fromIdx,
+    toIdx,
+  );
+  if (error) {
+    throw new Error(`[admin] listComplaints failed: ${error.message}`);
+  }
+
+  const total = count ?? 0;
+  return {
+    rows: (data ?? []) as Complaint[],
+    total,
+    page,
+    pageCount: Math.max(1, Math.ceil(total / PAGE_SIZE)),
+  };
+}
+
+/** Builds the filtered, newest-first complaints query shared by the paginated
+ *  list and the export. Does not apply a row range. */
+function filteredComplaintsQuery(filters: ComplaintFilters) {
+  const supabase = getSupabaseAdminClient();
   let query = supabase
     .from("complaints")
     .select("*", { count: "exact" })
@@ -91,23 +111,28 @@ export async function listComplaints(
   if (filters.to) query = query.lte("created_at", `${filters.to}T23:59:59.999`);
   if (filters.q && filters.q.trim()) {
     const term = filters.q.trim().replace(/[%,]/g, " ");
-    query = query.or(
-      `reference_id.ilike.%${term}%,subject.ilike.%${term}%`,
-    );
+    query = query.or(`reference_id.ilike.%${term}%,subject.ilike.%${term}%`);
   }
 
-  const { data, error, count } = await query.range(fromIdx, toIdx);
+  return query;
+}
+
+/**
+ * All matching complaints, newest first, without pagination — for CSV export.
+ * Capped so a runaway filter can never stream an unbounded response.
+ */
+export async function listAllComplaints(
+  filters: ComplaintFilters,
+  limit = 5000,
+): Promise<Complaint[]> {
+  const { data, error } = await filteredComplaintsQuery(filters).range(
+    0,
+    limit - 1,
+  );
   if (error) {
-    throw new Error(`[admin] listComplaints failed: ${error.message}`);
+    throw new Error(`[admin] listAllComplaints failed: ${error.message}`);
   }
-
-  const total = count ?? 0;
-  return {
-    rows: (data ?? []) as Complaint[],
-    total,
-    page,
-    pageCount: Math.max(1, Math.ceil(total / PAGE_SIZE)),
-  };
+  return (data ?? []) as Complaint[];
 }
 
 export async function getComplaintById(id: string): Promise<Complaint | null> {
