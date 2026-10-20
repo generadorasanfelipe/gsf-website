@@ -1,4 +1,5 @@
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
+import { recordStatusChange } from "@/lib/admin/notes";
 
 export const COMPLAINT_STATUSES = [
   "open",
@@ -147,6 +148,7 @@ export async function getStatusCounts(): Promise<Record<ComplaintStatus, number>
 export async function updateComplaintStatus(
   id: string,
   next: ComplaintStatus,
+  actorEmail: string,
 ): Promise<{ ok: true; row: Complaint } | { ok: false; reason: string }> {
   const current = await getComplaintById(id);
   if (!current) return { ok: false, reason: "not_found" };
@@ -165,5 +167,9 @@ export async function updateComplaintStatus(
   if (error) {
     return { ok: false, reason: error.message };
   }
+
+  // Audit trail — best-effort, never blocks the status change.
+  await recordStatusChange(id, actorEmail, current.status, next);
+
   return { ok: true, row: data as Complaint };
 }

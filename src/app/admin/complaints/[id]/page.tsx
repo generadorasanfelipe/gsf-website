@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getAdminUser } from "@/lib/admin/requireAdmin";
 import { getComplaintById } from "@/lib/admin/complaints";
+import { listNotes, listHistory } from "@/lib/admin/notes";
 import {
   STATUS_LABEL,
   STATUS_BADGE,
@@ -13,6 +14,7 @@ import {
   formatDR,
 } from "@/lib/admin/labels";
 import StatusControl from "./StatusControl";
+import NoteForm from "./NoteForm";
 
 export const metadata: Metadata = {
   title: "Detalle de reporte — Admin GSF",
@@ -46,6 +48,28 @@ export default async function ComplaintDetailPage({
 
   const c = await getComplaintById(id);
   if (!c) notFound();
+
+  const [notes, history] = await Promise.all([
+    listNotes(c.id),
+    listHistory(c.id),
+  ]);
+
+  // Merge notes and status changes into one chronological activity feed.
+  const activity = [
+    ...history.map((h) => ({
+      kind: "status" as const,
+      at: h.created_at,
+      actor: h.actor_email,
+      from: h.from_status,
+      to: h.to_status,
+    })),
+    ...notes.map((n) => ({
+      kind: "note" as const,
+      at: n.created_at,
+      actor: n.author_email,
+      body: n.body,
+    })),
+  ].sort((a, b) => a.at.localeCompare(b.at));
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -87,6 +111,60 @@ export default async function ComplaintDetailPage({
         <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-navy-700">
           {c.description}
         </p>
+      </div>
+
+      {/* Activity: internal notes + status history */}
+      <div className="mt-6 rounded-2xl border border-navy-200 bg-white p-6">
+        <h3 className="text-[11px] font-semibold uppercase tracking-wide text-navy-500">
+          Actividad interna
+        </h3>
+
+        {activity.length === 0 ? (
+          <p className="mt-3 text-sm text-navy-500">
+            Sin notas ni cambios de estado todavía.
+          </p>
+        ) : (
+          <ul className="mt-4 space-y-4">
+            {activity.map((a, i) => (
+              <li key={i} className="flex gap-3">
+                <span
+                  className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${
+                    a.kind === "status" ? "bg-sky-400" : "bg-navy-300"
+                  }`}
+                  aria-hidden="true"
+                />
+                <div className="min-w-0">
+                  {a.kind === "status" ? (
+                    <p className="text-sm text-navy-800">
+                      Estado cambiado{" "}
+                      {a.from && (
+                        <>
+                          de{" "}
+                          <span className="font-medium">
+                            {STATUS_LABEL[a.from]}
+                          </span>{" "}
+                        </>
+                      )}
+                      a{" "}
+                      <span className="font-medium">{STATUS_LABEL[a.to]}</span>
+                    </p>
+                  ) : (
+                    <p className="whitespace-pre-wrap text-sm text-navy-800">
+                      {a.body}
+                    </p>
+                  )}
+                  <p className="mt-0.5 text-xs text-navy-400">
+                    {a.actor} · {formatDR(a.at)}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <div className="mt-5 border-t border-navy-100 pt-1">
+          <NoteForm id={c.id} />
+        </div>
       </div>
 
       {/* Metadata */}
