@@ -15,7 +15,9 @@ export const REPORTER_CLASSES = ["internal", "external"] as const;
 export type ReporterClass = (typeof REPORTER_CLASSES)[number];
 
 export type Complaint = {
-  id: number;
+  // The live DB uses a UUID primary key; a bigint identity would arrive as a
+  // numeric string too. Treat the id as an opaque string either way.
+  id: string;
   reference_id: string;
   reporter_class: ReporterClass;
   type: ComplaintType;
@@ -107,7 +109,7 @@ export async function listComplaints(
   };
 }
 
-export async function getComplaintById(id: number): Promise<Complaint | null> {
+export async function getComplaintById(id: string): Promise<Complaint | null> {
   const supabase = getSupabaseAdminClient();
   const { data, error } = await supabase
     .from("complaints")
@@ -143,7 +145,7 @@ export async function getStatusCounts(): Promise<Record<ComplaintStatus, number>
  * updated row, or an error reason. Caller must have passed requireAdmin().
  */
 export async function updateComplaintStatus(
-  id: number,
+  id: string,
   next: ComplaintStatus,
 ): Promise<{ ok: true; row: Complaint } | { ok: false; reason: string }> {
   const current = await getComplaintById(id);

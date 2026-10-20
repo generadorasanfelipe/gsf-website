@@ -30,9 +30,9 @@ export async function updateStatusAction(
 
   const idRaw = formData.get("id");
   const nextRaw = formData.get("status");
-  const id = Number(idRaw);
+  const id = typeof idRaw === "string" ? idRaw.trim() : "";
 
-  if (!Number.isInteger(id) || id <= 0) {
+  if (!id) {
     return { ok: false, message: "Reporte inválido." };
   }
   if (!isValidStatus(nextRaw)) {

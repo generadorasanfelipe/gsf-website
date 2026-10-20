@@ -41,8 +41,8 @@ export default async function ComplaintDetailPage({
   if (!admin) redirect("/admin/login");
 
   const { id: idRaw } = await params;
-  const id = Number(idRaw);
-  if (!Number.isInteger(id) || id <= 0) notFound();
+  const id = decodeURIComponent(idRaw).trim();
+  if (!id) notFound();
 
   const c = await getComplaintById(id);
   if (!c) notFound();
